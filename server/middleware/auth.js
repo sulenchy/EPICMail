@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import db from '../dB/index';
+import db from '../config/index';
 
 const Auth = {
   async verifyToken(req, res, next) {
