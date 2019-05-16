@@ -1,8 +1,9 @@
-import db from '../dB/index';
+import db from '../config/index';
 import Helper from './helper';
 
-const GroupController = {
-  async createAGroup(req, res) {
+class GroupController {
+
+  static async createAGroup(req, res) {
     const { name } = req.body;
     if (!name) {
       return res.status(400).json({
@@ -24,9 +25,10 @@ const GroupController = {
         error,
       });
     }
-  },
+  }
 
-  async getAllGroups(req, res) {
+
+  static async getAllGroups(req, res) {
     const findAllQuery = 'SELECT * FROM groups WHERE role=$1;';
     try {
       const rows = await db.query(findAllQuery, ['admin']);
@@ -46,9 +48,10 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async editGroupName(req, res) {
+
+  static async editGroupName(req, res) {
     const { name } = req.body;
     const { id } = req.params;
     if (!name) {
@@ -76,9 +79,9 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async deleteAGroup(req, res) {
+  static async deleteAGroup(req, res) {
     const deleteQuery = 'DELETE FROM groups WHERE id=$1 returning *;';
     try {
       const { rows } = await db.query(deleteQuery, [req.params.id]);
@@ -92,9 +95,9 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async addUserToGroup(req, res) {
+  static async addUserToGroup(req, res) {
     let { userEmail } = req.body;
     const { id } = req.params;
     const member = req.body.userEmail;
@@ -151,9 +154,9 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async deleteUserFromGroup(req, res) {
+  static async deleteUserFromGroup(req, res) {
     const { id, userId } = req.params;
     try {
       const getGroupId = await db.query('SELECT * FROM groups WHERE id = $1 AND role=$2;', [id, 'admin']);
@@ -182,9 +185,9 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getAllGroupUsers(req, res) {
+  static async getAllGroupUsers(req, res) {
     const { id } = req.params;
     try {
       const getGroupId = await db.query('SELECT * FROM groups WHERE id = $1 AND role=$2;', [id, 'admin']);
@@ -212,9 +215,9 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getAGroupUser(req, res) {
+  static async getAGroupUser(req, res) {
     const { id, userId } = req.params;
     try {
       const getGroupId = await db.query('SELECT * FROM groups WHERE id = $1 AND role=$2;', [id, 'admin']);
@@ -242,10 +245,10 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
 
-  async sendEmailToGroup(req, res) {
+  static async sendEmailToGroup(req, res) {
     let {
       senderEmail,
       subject,
@@ -298,9 +301,9 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getAllReceivedGroupEmail(req, res) {
+  static async getAllReceivedGroupEmail(req, res) {
     const { id } = req.params;
     const { email } = req.user;
     const getGroupId = await db.query('SELECT * FROM groups WHERE id = $1 AND role=$2;', [id, 'admin']);
@@ -336,9 +339,9 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getSentGroupEmail(req, res) {
+  static async getSentGroupEmail(req, res) {
     const { id } = req.params;
     const { email } = req.user;
     const getGroupId = await db.query('SELECT * FROM groups WHERE id = $1 AND role=$2;', [id, 'admin']);
@@ -374,9 +377,9 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getUnreadGroupEmail(req, res) {
+  static async getUnreadGroupEmail(req, res) {
     const { id } = req.params;
     const { email } = req.user;
     const getGroupId = await db.query('SELECT * FROM groups WHERE id = $1 AND role=$2;', [id, 'admin']);
@@ -412,9 +415,9 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getAGroupEmail(req, res) {
+  static async getAGroupEmail(req, res) {
     const { id, msgId } = req.params;
     const { email } = req.user;
     const getGroupId = await db.query('SELECT * FROM groups WHERE id = $1 AND role=$2;', [id, 'admin']);
@@ -450,9 +453,9 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async deleteAGroupEmail(req, res) {
+  static async deleteAGroupEmail(req, res) {
     const { id, msgId } = req.params;
     const { email } = req.user;
     const getGroupId = await db.query('SELECT * FROM groups WHERE id = $1 AND role=$2;', [id, 'admin']);
@@ -488,7 +491,7 @@ const GroupController = {
         error: error.message,
       });
     }
-  },
+  }
 }
 
 export default GroupController;

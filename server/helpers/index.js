@@ -1,17 +1,20 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-const Helper = {
-  hashPassword(password) {
+class Helper {
+  static hashPassword(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
-  },
-  comparePassword(hashPassword, password) {
+  }
+
+  static comparePassword(hashPassword, password) {
     return bcrypt.compareSync(password, hashPassword);
-  },
-  isValidEmail(email) {
+  }
+
+  static isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
-  },
-  generateToken(id) {
+  }
+
+  static generateToken(id) {
     const token = jwt.sign({
       userId: id,
     },
@@ -19,7 +22,8 @@ const Helper = {
       expiresIn: '365d',
     });
     return token;
-  },
-};
+  }
+}
+
 
 export default Helper;

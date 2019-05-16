@@ -1,8 +1,8 @@
-import db from '../dB/index';
-import Helper from './helper';
+import db from '../config/index';
+import Helper from '../helpers/index';
 
-const MessageController = {
-  async createAMessage(req, res) {
+class Message {
+  static async createAMessage(req, res) {
     let {
       senderEmail,
       receiverEmail,
@@ -64,9 +64,9 @@ const MessageController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getAllReceivedMessages(req, res) {
+  static async getAllReceivedMessages(req, res) {
     const {
       email,
     } = req.user;
@@ -89,9 +89,9 @@ const MessageController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getAllUnreadMessages(req, res) {
+  static async getAllUnreadMessages(req, res) {
     const findAllQuery = 'SELECT * FROM messages WHERE status= $1';
     try {
       const { rows } = await db.query(findAllQuery, ['unread']);
@@ -111,9 +111,9 @@ const MessageController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getAllSentMessages(req, res) {
+  static async getAllSentMessages(req, res) {
     const {
       email,
     } = req.user;
@@ -136,9 +136,9 @@ const MessageController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getAMessage(req, res) {
+  static async getAMessage(req, res) {
     const { id } = req.params;
     const text = 'SELECT * FROM messages WHERE id = $1';
     try {
@@ -159,9 +159,9 @@ const MessageController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async deleteAMessage(req, res) {
+  static async deleteAMessage(req, res) {
     const { id } = req.params;
     const deleteQuery = 'DELETE FROM messages WHERE id=$1 returning *';
     try {
@@ -184,7 +184,7 @@ const MessageController = {
         error: error.message,
       });
     }
-  },
-};
+  }
+}
 
-export default MessageController;
+export default Message;

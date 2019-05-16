@@ -1,10 +1,9 @@
 import jwt from 'jsonwebtoken';
-import db from '../dB/index';
-import Helper from './helper';
+import db from '../config/index';
+import Helper from '../helpers/index';
 
-
-const UserController = {
-  async create(req, res) {
+class User {
+  static async create(req, res) {
     let {
       email, firstName, lastName,
     } = req.body;
@@ -77,9 +76,9 @@ const UserController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async login(req, res) {
+  static async login(req, res) {
     let {
       email,
     } = req.body;
@@ -133,9 +132,9 @@ const UserController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getAllUsers(req, res) {
+  static async getAllUsers(req, res) {
     try {
       const { rows } = await db.query('SELECT id, email, firstName, lastName FROM users');
       if (!rows[0]) {
@@ -154,9 +153,9 @@ const UserController = {
         error: error.message,
       });
     }
-  },
+  }
 
-  async getAUser(req, res) {
+  static async getAUser(req, res) {
     const { id } = req.params;
     try {
       const { rows } = await db.query('SELECT id, email, firstName, lastName FROM users WHERE id = $1;', [id]);
@@ -176,7 +175,7 @@ const UserController = {
         error: error.message,
       });
     }
-  },
-};
+  }
+}
 
-export default UserController;
+export default User;
